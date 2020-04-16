@@ -1,0 +1,6 @@
+"0","# Read using Quanteda ----
+corpus_1 <- readtext::readtext(""/Users/ScottPatterson/OneDrive - McGill University/research/inequality/inequality/unga_speeches"", docvarsfrom = c(""filenames""), dvsep = ""_"")
+"
+"2","Error in list_files(file, ignore_missing, TRUE, verbosity) : 
+  File '' does not exist.
+"

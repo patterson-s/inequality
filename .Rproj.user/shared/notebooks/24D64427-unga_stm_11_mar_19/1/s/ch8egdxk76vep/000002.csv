@@ -1,0 +1,27 @@
+"0","```r
+
+## topicCorr Models
+
+topicCorr_6 <- topicCorr(stm_6_thresh_0, method = \"simple\")
+topicCorr_12 <- topicCorr(stm_12_thresh_0, method = \"simple\")
+topicCorr_18 <- topicCorr(stm_18_thresh_0, method = \"simple\")
+topicCorr_24 <- topicCorr(stm_24_thresh_0, method = \"simple\")
+topicCorr_30 <- topicCorr(stm_30_thresh_0, method = \"simple\")
+
+mod_12_effect_4_10 <- estimateEffect(c(4,10) ~ year, stm_12_thresh_0, metadata = meta_thresh_0)
+
+summary(mod_12_effect_4_10)
+
+
+
+### Node Sizing 
+
+node_size <- abs(topicCorr_12$cor*100)
+
+plot(topicCorr_12, vertex.size = node_size)
+
+
+
+
+
+```"

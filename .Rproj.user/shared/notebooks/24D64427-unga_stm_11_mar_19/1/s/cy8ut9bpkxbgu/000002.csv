@@ -1,0 +1,8 @@
+"0","```r
+viz_1 <- stmCorrViz(stm_12_thresh_0, \"stm_viz_1.html\", title=\"stm_12_thresh_0\", display=TRUE, verbose=TRUE )
+
+viz_2 <- stmCorrViz(stm_12_thresh_0, \"stm_viz_1.html\", title=\"stm_12_thresh_0\", labels_number=20, display=TRUE, verbose=TRUE )
+
+
+
+```"

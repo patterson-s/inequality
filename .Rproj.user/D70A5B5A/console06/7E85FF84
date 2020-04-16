@@ -1,0 +1,7 @@
+
+The default interactive shell is now zsh.
+To update your account to use zsh, please run `chsh -s /bin/zsh`.
+For more details, please visit https://support.apple.com/kb/HT208050.
+]0;~/OneDrive - McGill University/patterson_pouliot/inequality/inequality[?1034hScotts-MacBook-Pro:inequality ScottPatterson$ [KScotts-MacBook-Pro:inequality ScottPatterson$ pwd
+/Users/ScottPatterson/OneDrive - McGill University/patterson_pouliot/inequality/inequality
+]0;~/OneDrive - McGill University/patterson_pouliot/inequality/inequalityScotts-MacBook-Pro:inequality ScottPatterson$ 

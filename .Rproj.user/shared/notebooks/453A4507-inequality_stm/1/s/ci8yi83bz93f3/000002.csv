@@ -1,0 +1,6 @@
+"0","# P5 ----"
+"0","corpus_4 <- mutate(corpus_1, P5 = ifelse(docvar1 == ""FRA"", 1,"
+"0","                                         ifelse(docvar1 == ""USA"", 1,"
+"0","                                                ifelse(docvar1 == ""GBR"",1,"
+"0","                                                       ifelse(docvar1 == ""CHN"",1,"
+"0","                                                              ifelse(docvar1 == ""RUS"",1,0))))))"

@@ -1,0 +1,2 @@
+"0","# plotRemoved: test different thresholds for infrequent word removal ----"
+"0","plotRemoved(corpus_2$documents, lower.thresh = seq(1,200, by = 25))"

@@ -1,0 +1,353 @@
+---
+title: "transposing_foundational_institutions"
+output: html_notebook
+---
+
+Citation: Mikhaylov, Slava; Baturo, Alexander; Dasandi, Niheer, 2017, "United Nations General Debate Corpus", doi:10.7910/DVN/0TJX8Y, Harvard Dataverse, V3
+
+Somebody beat me to the punch and has already converted the UNGA speeches into a machine-readable format. Not mad, a bit frustrated that I didn't spend more time searching. 
+
+The files are saved as .txt documents. I need to convert them into an R dataframe
+
+library
+```{r}
+library(topicmodels)
+library(tm)
+library(splitstackshape)
+library(ldatuning)
+library(parallel)
+library(stm)
+library(quanteda)
+library(tidytext)
+library(tidyverse)
+library(tokenizers)
+library(dplyr)
+library(stmCorrViz)
+library(rvest)
+library(dummies)
+library(igraph)
+
+
+```
+
+quanteda text processing
+
+quant_df: full dataset, untokenized
+quant_sub: dataset subset from 1986-
+
+```{r}
+quant_df <- readtext::readtext("~/Desktop/unga_statements", docvarsfrom = c("filenames"), dvsep = "_")
+
+colname_vector <- c("doc_id", "text", "state", "unga", "year")
+quant_df<- `colnames<-`(quant_df,colname_vector)
+
+#quant_sub <- quant_df[ which(quant_df$year > 1985), ]
+
+rm(colname_vector)
+
+```
+
+
+Topic models at different preprocessing threshold values ; 0,25,50,100
+
+```{r}
+plotRemoved(docs, lower.thresh = seq(from=1, to=200, by=10))
+
+processed_corpus <- textProcessor(documents = quant_df$text, metadata = quant_df)
+
+# Threshold pre-processing
+out_thresh_0 <- prepDocuments(processed_corpus$documents,processed_corpus$vocab,processed_corpus$meta)
+doc_thresh_0 <- out_thresh_0$documents
+voc_thresh_0 <- out_thresh_0$vocab
+meta_thresh_0 <- out_thresh_0$meta
+
+out_thresh_25 <- prepDocuments(processed_corpus$documents,processed_corpus$vocab,processed_corpus$meta, lower.thresh = 25)
+doc_thresh_25 <- out_thresh_25$documents
+voc_thresh_25 <- out_thresh_25$vocab
+meta_thresh_25 <- out_thresh_25$meta
+
+out_thresh_50 <- prepDocuments(processed_corpus$documents,processed_corpus$vocab,processed_corpus$meta, lower.thresh = 50)
+doc_thresh_50 <- out_thresh_50$documents
+voc_thresh_50 <- out_thresh_50$vocab
+meta_thresh_50 <- out_thresh_50$meta
+
+out_thresh_100 <- prepDocuments(processed_corpus$documents,processed_corpus$vocab,processed_corpus$meta, lower.thresh = 100)
+doc_thresh_100 <- out_thresh_100$documents
+voc_thresh_100 <- out_thresh_100$vocab
+meta_thresh_100 <- out_thresh_100$meta
+
+## stm_6 ##
+
+stm_6_thresh_0 <- stm(documents = doc_thresh_0, vocab = voc_thresh_0, K = 6, prevalence = ~state+s(year), data = meta_thresh_0, init.type = "Spectral")
+stm_6_thresh_25 <- stm(documents = doc_thresh_25, vocab = voc_thresh_25, K = 6, prevalence = ~state+s(year), data = meta_thresh_25, init.type = "Spectral")
+stm_6_thresh_50 <- stm(documents = doc_thresh_50, vocab = voc_thresh_50, K = 6, prevalence = ~state+s(year), data = meta_thresh_50, init.type = "Spectral")
+stm_6_thresh_100 <- stm(documents = doc_thresh_100, vocab = voc_thresh_100, K = 6, prevalence = ~state+s(year), data = meta_thresh_100, init.type = "Spectral")
+
+## stm_12 ##
+
+stm_12_thresh_0 <- stm(documents = doc_thresh_0, vocab = voc_thresh_0, K = 12, prevalence = ~state+s(year), data = meta_thresh_0, init.type = "Spectral")
+stm_12_thresh_25 <- stm(documents = doc_thresh_25, vocab = voc_thresh_25, K = 12, prevalence = ~state+s(year), data = meta_thresh_25, init.type = "Spectral")
+stm_12_thresh_50 <- stm(documents = doc_thresh_50, vocab = voc_thresh_50, K = 12, prevalence = ~state+s(year), data = meta_thresh_50, init.type = "Spectral")
+stm_12_thresh_100 <- stm(documents = doc_thresh_100, vocab = voc_thresh_100, K = 12, prevalence = ~state+s(year), data = meta_thresh_100, init.type = "Spectral")
+
+## stm_18 ##
+
+stm_18_thresh_0 <- stm(documents = doc_thresh_0, vocab = voc_thresh_0, K = 18, prevalence = ~state+s(year), data = meta_thresh_0, init.type = "Spectral")
+stm_18_thresh_25 <- stm(documents = doc_thresh_25, vocab = voc_thresh_25, K = 18, prevalence = ~state+s(year), data = meta_thresh_25, init.type = "Spectral")
+stm_18_thresh_50 <- stm(documents = doc_thresh_50, vocab = voc_thresh_50, K = 18, prevalence = ~state+s(year), data = meta_thresh_50, init.type = "Spectral")
+stm_18_thresh_100 <- stm(documents = doc_thresh_100, vocab = voc_thresh_100, K = 18, prevalence = ~state+s(year), data = meta_thresh_100, init.type = "Spectral")
+
+## stm_24 ##
+
+stm_24_thresh_0 <- stm(documents = doc_thresh_0, vocab = voc_thresh_0, K = 24, prevalence = ~state+s(year), data = meta_thresh_0, init.type = "Spectral")
+stm_24_thresh_25 <- stm(documents = doc_thresh_25, vocab = voc_thresh_25, K = 24, prevalence = ~state+s(year), data = meta_thresh_25, init.type = "Spectral")
+stm_24_thresh_50 <- stm(documents = doc_thresh_50, vocab = voc_thresh_50, K = 24, prevalence = ~state+s(year), data = meta_thresh_50, init.type = "Spectral")
+stm_24_thresh_100 <- stm(documents = doc_thresh_100, vocab = voc_thresh_100, K = 24, prevalence = ~state+s(year), data = meta_thresh_100, init.type = "Spectral")
+
+## stm_30 ##
+
+stm_30_thresh_0 <- stm(documents = doc_thresh_0, vocab = voc_thresh_0, K = 30, prevalence = ~state+s(year), data = meta_thresh_0, init.type = "Spectral")
+stm_30_thresh_25 <- stm(documents = doc_thresh_25, vocab = voc_thresh_25, K = 30, prevalence = ~state+s(year), data = meta_thresh_25, init.type = "Spectral")
+stm_30_thresh_50 <- stm(documents = doc_thresh_50, vocab = voc_thresh_50, K = 30, prevalence = ~state+s(year), data = meta_thresh_50, init.type = "Spectral")
+stm_30_thresh_100 <- stm(documents = doc_thresh_100, vocab = voc_thresh_100, K = 30, prevalence = ~state+s(year), data = meta_thresh_100, init.type = "Spectral")
+
+
+
+## Label Topics ##
+
+labelTopics(stm_6_thresh_0, n = 20)
+labelTopics(stm_6_thresh_25, n = 20)
+labelTopics(stm_6_thresh_50, n = 20)
+labelTopics(stm_6_thresh_100, n = 20)
+
+labelTopics(stm_12_thresh_0, n = 20)
+labelTopics(stm_12_thresh_25, n = 20)
+labelTopics(stm_12_thresh_50, n = 20)
+labelTopics(stm_12_thresh_100, n = 20)
+
+labelTopics(stm_18_thresh_0, n = 20)
+labelTopics(stm_18_thresh_25, n = 20)
+labelTopics(stm_18_thresh_50, n = 20)
+labelTopics(stm_18_thresh_100, n = 20)
+
+labelTopics(stm_24_thresh_0, n = 20)
+labelTopics(stm_24_thresh_25, n = 20)
+labelTopics(stm_24_thresh_50, n = 20)
+labelTopics(stm_24_thresh_100, n = 20)
+
+labelTopics(stm_30_thresh_0, n = 20)
+labelTopics(stm_30_thresh_25, n = 20)
+labelTopics(stm_30_thresh_50, n = 20)
+labelTopics(stm_30_thresh_100, n = 20)
+
+
+#rm(doc_thresh_0, doc_thresh_25, doc_thresh_50,doc_thresh_100, meta_thresh_0, meta_thresh_25, meta_thresh_50,meta_thresh_100, out_thresh_0, out_thresh_25, out_thresh_50, out_thresh_100, voc_thresh_0, voc_thresh_100, voc_thresh_25, voc_thresh_50)
+
+```
+
+
+topic proportion visuals 
+
+```{r}
+
+
+topicNames_32 <-c("Topic 1", "Topic 2", "Topic 3", "Topic 4", "Topic 5", "Topic 6", "Topic 7", "Topic 8", "Topic 9", "Topic 10", "Topic 11", "Topic 12", "Topic 13", "Topic 14", "Topic 15", "Topic 16", "Topic 17", "Topic 18", "Topic 19", "Topic 20", "Topic 21", "Topic 22", "Topic 23", "Topic 24", "Topic 25", "Topic 26", "Topic 27", "Topic 28", "Topic 29", "Topic 30", "Topic 31", "Topic 32")
+
+
+topicNames_6 <-c("Topic 1", "Topic 2", "Topic 3", "Topic 4", "Topic 5", "Topic 6")
+
+topicNames_12 <-c("Topic 1", "Topic 2", "Topic 3", "Topic 4", "Topic 5", "Topic 6", "Topic 7", "Topic 8", "Topic 9", "Topic 10", "Topic 11", "Topic 12")
+
+topicNames_18 <-c("Topic 1", "Topic 2", "Topic 3", "Topic 4", "Topic 5", "Topic 6", "Topic 7", "Topic 8", "Topic 9", "Topic 10", "Topic 11", "Topic 12", "Topic 13", "Topic 14", "Topic 15", "Topic 16", "Topic 17", "Topic 18")
+
+topicNames_24 <-c("Topic 1", "Topic 2", "Topic 3", "Topic 4", "Topic 5", "Topic 6", "Topic 7", "Topic 8", "Topic 9", "Topic 10", "Topic 11", "Topic 12", "Topic 13", "Topic 14", "Topic 15", "Topic 16", "Topic 17", "Topic 18", "Topic 19", "Topic 20", "Topic 21", "Topic 22", "Topic 23", "Topic 24")
+
+topicNames_30 <-c("Topic 1", "Topic 2", "Topic 3", "Topic 4", "Topic 5", "Topic 6", "Topic 7", "Topic 8", "Topic 9", "Topic 10", "Topic 11", "Topic 12", "Topic 13", "Topic 14", "Topic 15", "Topic 16", "Topic 17", "Topic 18", "Topic 19", "Topic 20", "Topic 21", "Topic 22", "Topic 23", "Topic 24", "Topic 25", "Topic 26", "Topic 27", "Topic 28", "Topic 29", "Topic 30")
+
+
+### Topic Proportions Graphs ##
+
+proportions_6 <- plot(stm_6_thresh_0, type = "summary", custom.labels = "", topic.names = topicNames_6, par(col="grey40", lwd=5))
+
+proportions_12 <- plot(stm_12_thresh_0, type = "summary", custom.labels = "", topic.names = topicNames_12, par(col="grey40", lwd=5))
+
+proportions_18 <- plot(stm_18_thresh_0, type = "summary", custom.labels = "", topic.names = topicNames_18, par(col="grey40", lwd=5))
+
+proportions_24 <- plot(stm_24_thresh_0, type = "summary", custom.labels = "", topic.names = topicNames_24, par(col="grey40", lwd=5))
+
+proportions_30 <- plot(stm_30_thresh_0, type = "summary", custom.labels = "", topic.names = topicNames_30, par(col="grey40", lwd=5))
+
+
+### plots on perspective ##
+
+plot.STM(stm_6_thresh_0, type = "perspectives", topics = c(1,5), custom.labels="", topic.names = topicNames_6)
+
+
+```
+
+
+Estimate Effect
+
+```{r}
+
+### Year Effects 
+
+stm_6_year_effect <- estimateEffect(formula = 1:6~year,
+                                    stmobj = stm_6_thresh_0, metadata =
+                                      meta_thresh_0)
+
+stm_12_year_effect <- estimateEffect(formula = 1:12~year,
+                                    stmobj = stm_12_thresh_0, metadata =
+                                      meta_thresh_0)
+
+stm_18_year_effect <- estimateEffect(formula = 1:18~year,
+                                    stmobj = stm_18_thresh_0, metadata =
+                                      meta_thresh_0)
+
+stm_24_year_effect <- estimateEffect(formula = 1:24~year,
+                                    stmobj = stm_24_thresh_0, metadata =
+                                      meta_thresh_0)
+
+stm_30_year_effect <- estimateEffect(formula = 1:30~year,
+                                    stmobj = stm_30_thresh_0, metadata =
+                                      meta_thresh_0)
+
+
+
+## Topics w/ nuclear 
+
+stm_12_nuclear_effect<-estimateEffect(formula=c(1:12)~state+s(year),                                stmobj=stm_12_thresh_0,metadata=meta_thresh_0)
+
+
+### Nuclear Effect Plots 
+plot.estimateEffect(stm_12_nuclear_effect,  
+                covariate="year",
+                model=stm_12_thresh_0,
+                topics=4,
+                method="continuous",
+                xlab="Year",
+                ylab="Expected Topic Proportions",
+                main="Topic Proportions over Time",
+                moderator="state",
+                moderator.value="USA",
+                ylim=c(0,1),xlim=c(1970,2017),
+                linecol="red",
+                printlegend=F)
+
+
+```
+
+
+networks topicCorr
+
+```{r}
+
+## topicCorr Models
+
+topicCorr_6 <- topicCorr(stm_6_thresh_0, method = "simple")
+topicCorr_12 <- topicCorr(stm_12_thresh_0, method = "simple")
+topicCorr_18 <- topicCorr(stm_18_thresh_0, method = "simple")
+topicCorr_24 <- topicCorr(stm_24_thresh_0, method = "simple")
+topicCorr_30 <- topicCorr(stm_30_thresh_0, method = "simple")
+
+mod_12_effect_4_10 <- estimateEffect(c(4,10) ~ year, stm_12_thresh_0, metadata = meta_thresh_0)
+
+summary(mod_12_effect_4_10)
+
+
+
+### Node Sizing 
+
+node_size <- abs(topicCorr_12$cor*100)
+
+plot(topicCorr_12, vertex.size = node_size)
+
+
+
+
+
+```
+
+Dynamic networks:
+
+Trying to weight the network connections according to the tc_1$cor; 
+first save matrix, then 0 all <0 values 
+
+```{r}
+
+network_weights <- topicCorr_12$cor
+network_weights[network_weights<0] <- 0
+
+network_weights[1,]
+network_weights[5,]
+
+```
+
+
+
+
+
+stmCorrViz
+
+```{r}
+viz_1 <- stmCorrViz(stm_12_thresh_0, "stm_viz_1.html", title="stm_12_thresh_0", display=TRUE, verbose=TRUE )
+
+viz_2 <- stmCorrViz(stm_12_thresh_0, "stm_viz_1.html", title="stm_12_thresh_0", labels_number=20, display=TRUE, verbose=TRUE )
+
+
+
+```
+
+
+
+
+
+
+igraph tutorials 
+
+```{r}
+
+field_1 <- make_star(7)
+
+plot(field_1, vertex.label=c(1,3,15,19,25,27,28))
+
+f1_corr_vals <- 100*(c(0, 0.12410793,0.05483291,0.03372434,0.01994290,0.05039299,0.01171504))
+
+plot(field_1, edge.arrow.size=f1_corr_vals, vertex.label=c(1,3,15,19,25,27,28))
+
+V(field_1)$size <- f1_corr_vals*1000
+
+plot(field_1)
+
+
+
+#####
+
+tc_1$cor[1,]
+
+f1 <- make_star(7, mode = "undirected")
+
+V(f1)$topic_name <- c("Top", "Topic 3", "Topic 15", "Topic 19",  "Topic 25", "Topic 27", "Topic 28")
+
+E(f1)$posadj <- c(tc_1$posadj[1,3],tc_1$posadj[1,15],tc_1$posadj[1,19],tc_1$posadj[1,25],tc_1$posadj[1,27],tc_1$posadj[1,28])
+
+E(f1)$poscor <- c(tc_1$poscor[1,3],tc_1$poscor[1,15],tc_1$poscor[1,19],tc_1$poscor[1,25],tc_1$poscor[1,27],tc_1$poscor[1,28])
+
+E(f1)$cor <- c(tc_1$cor[1,3],tc_1$cor[1,15],tc_1$cor[1,19],tc_1$cor[1,25],tc_1$cor[1,27],tc_1$cor[1,28])
+
+
+f1_v_label <- c("COLDWAR", "Topic 3", "Topic 15","Topic 19",  "Topic 25", "Topic 27", "Topic 28")
+
+
+
+plot(f1,edge.width=(E(f1)$poscor*100), vertex.label=f1_v_label)
+
+
+
+
+```
+
+
+
+
+

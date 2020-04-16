@@ -1,0 +1,48 @@
+"0","```r
+
+### Year Effects 
+
+stm_6_year_effect <- estimateEffect(formula = 1:6~year,
+                                    stmobj = stm_6_thresh_0, metadata =
+                                      meta_thresh_0)
+
+stm_12_year_effect <- estimateEffect(formula = 1:12~year,
+                                    stmobj = stm_12_thresh_0, metadata =
+                                      meta_thresh_0)
+
+stm_18_year_effect <- estimateEffect(formula = 1:18~year,
+                                    stmobj = stm_18_thresh_0, metadata =
+                                      meta_thresh_0)
+
+stm_24_year_effect <- estimateEffect(formula = 1:24~year,
+                                    stmobj = stm_24_thresh_0, metadata =
+                                      meta_thresh_0)
+
+stm_30_year_effect <- estimateEffect(formula = 1:30~year,
+                                    stmobj = stm_30_thresh_0, metadata =
+                                      meta_thresh_0)
+
+
+
+## Topics w/ nuclear 
+
+stm_12_nuclear_effect<-estimateEffect(formula=c(1:12)~state+s(year),                                stmobj=stm_12_thresh_0,metadata=meta_thresh_0)
+
+
+### Nuclear Effect Plots 
+plot.estimateEffect(stm_12_nuclear_effect,  
+                covariate=\"year\",
+                model=stm_12_thresh_0,
+                topics=4,
+                method=\"continuous\",
+                xlab=\"Year\",
+                ylab=\"Expected Topic Proportions\",
+                main=\"Topic Proportions over Time\",
+                moderator=\"state\",
+                moderator.value=\"USA\",
+                ylim=c(0,1),xlim=c(1970,2017),
+                linecol=\"red\",
+                printlegend=F)
+
+
+```"

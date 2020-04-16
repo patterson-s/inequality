@@ -1,0 +1,9 @@
+"0","```r
+
+network_weights <- topicCorr_12$cor
+network_weights[network_weights<0] <- 0
+
+network_weights[1,]
+network_weights[5,]
+
+```"

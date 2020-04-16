@@ -1,0 +1,7 @@
+"0","```r
+quant_df <- readtext::readtext(\"~/Desktop/unga_statements\", docvarsfrom = c(\"filenames\"), dvsep = \"_\")
+colname_vector <- c(\"doc_id\", \"text\", \"state\", \"unga\", \"year\")
+quant_df<- `colnames<-`(quant_df,colname_vector)
+quant_sub <- quant_df[ which(quant_df$year > 1985), ]
+rm(colname_vector)
+```"

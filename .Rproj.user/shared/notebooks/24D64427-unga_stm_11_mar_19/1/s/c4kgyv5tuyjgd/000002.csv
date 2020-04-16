@@ -1,0 +1,36 @@
+"0","```r
+
+
+topicNames_32 <-c(\"Topic 1\", \"Topic 2\", \"Topic 3\", \"Topic 4\", \"Topic 5\", \"Topic 6\", \"Topic 7\", \"Topic 8\", \"Topic 9\", \"Topic 10\", \"Topic 11\", \"Topic 12\", \"Topic 13\", \"Topic 14\", \"Topic 15\", \"Topic 16\", \"Topic 17\", \"Topic 18\", \"Topic 19\", \"Topic 20\", \"Topic 21\", \"Topic 22\", \"Topic 23\", \"Topic 24\", \"Topic 25\", \"Topic 26\", \"Topic 27\", \"Topic 28\", \"Topic 29\", \"Topic 30\", \"Topic 31\", \"Topic 32\")
+
+
+topicNames_6 <-c(\"Topic 1\", \"Topic 2\", \"Topic 3\", \"Topic 4\", \"Topic 5\", \"Topic 6\")
+
+topicNames_12 <-c(\"Topic 1\", \"Topic 2\", \"Topic 3\", \"Topic 4\", \"Topic 5\", \"Topic 6\", \"Topic 7\", \"Topic 8\", \"Topic 9\", \"Topic 10\", \"Topic 11\", \"Topic 12\")
+
+topicNames_18 <-c(\"Topic 1\", \"Topic 2\", \"Topic 3\", \"Topic 4\", \"Topic 5\", \"Topic 6\", \"Topic 7\", \"Topic 8\", \"Topic 9\", \"Topic 10\", \"Topic 11\", \"Topic 12\", \"Topic 13\", \"Topic 14\", \"Topic 15\", \"Topic 16\", \"Topic 17\", \"Topic 18\")
+
+topicNames_24 <-c(\"Topic 1\", \"Topic 2\", \"Topic 3\", \"Topic 4\", \"Topic 5\", \"Topic 6\", \"Topic 7\", \"Topic 8\", \"Topic 9\", \"Topic 10\", \"Topic 11\", \"Topic 12\", \"Topic 13\", \"Topic 14\", \"Topic 15\", \"Topic 16\", \"Topic 17\", \"Topic 18\", \"Topic 19\", \"Topic 20\", \"Topic 21\", \"Topic 22\", \"Topic 23\", \"Topic 24\")
+
+topicNames_30 <-c(\"Topic 1\", \"Topic 2\", \"Topic 3\", \"Topic 4\", \"Topic 5\", \"Topic 6\", \"Topic 7\", \"Topic 8\", \"Topic 9\", \"Topic 10\", \"Topic 11\", \"Topic 12\", \"Topic 13\", \"Topic 14\", \"Topic 15\", \"Topic 16\", \"Topic 17\", \"Topic 18\", \"Topic 19\", \"Topic 20\", \"Topic 21\", \"Topic 22\", \"Topic 23\", \"Topic 24\", \"Topic 25\", \"Topic 26\", \"Topic 27\", \"Topic 28\", \"Topic 29\", \"Topic 30\")
+
+
+### Topic Proportions Graphs ##
+
+proportions_6 <- plot(stm_6_thresh_0, type = \"summary\", custom.labels = \"\", topic.names = topicNames_6, par(col=\"grey40\", lwd=5))
+
+proportions_12 <- plot(stm_12_thresh_0, type = \"summary\", custom.labels = \"\", topic.names = topicNames_12, par(col=\"grey40\", lwd=5))
+
+proportions_18 <- plot(stm_18_thresh_0, type = \"summary\", custom.labels = \"\", topic.names = topicNames_18, par(col=\"grey40\", lwd=5))
+
+proportions_24 <- plot(stm_24_thresh_0, type = \"summary\", custom.labels = \"\", topic.names = topicNames_24, par(col=\"grey40\", lwd=5))
+
+proportions_30 <- plot(stm_30_thresh_0, type = \"summary\", custom.labels = \"\", topic.names = topicNames_30, par(col=\"grey40\", lwd=5))
+
+
+### plots on perspective ##
+
+plot.STM(stm_6_thresh_0, type = \"perspectives\", topics = c(1,5), custom.labels=\"\", topic.names = topicNames_6)
+
+
+```"

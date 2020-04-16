@@ -1,0 +1,5 @@
+"0","#prepDocuments ----"
+"0","corpus_3 <- prepDocuments(corpus_2$documents, corpus_2$vocab, corpus_2$meta, lower.thresh = 15)"
+"1","Removing 41189 of 50938 terms (101505 of 5169003 tokens) due to frequency 
+"
+"1","Your corpus now has 7507 documents, 9749 terms and 5067498 tokens."
