@@ -1,0 +1,12 @@
+"0","unga_2017_corpus <- read_csv(""unga_2017_corpus.csv"")"
+"2","Missing column names filled in: 'X1' [1]"
+"2","Parsed with column specification:
+cols(
+  X1 = [32mcol_double()[39m,
+  doc_id = [31mcol_character()[39m,
+  text = [31mcol_character()[39m,
+  docvar1 = [31mcol_character()[39m,
+  docvar2 = [32mcol_double()[39m,
+  docvar3 = [32mcol_double()[39m
+)
+"

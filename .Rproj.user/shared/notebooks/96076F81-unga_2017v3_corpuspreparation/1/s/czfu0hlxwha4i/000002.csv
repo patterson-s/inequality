@@ -1,0 +1,8 @@
+"0","# Specify metadata from corpus ----"
+"0","unga_2017_corpus_meta <- data.frame(unga_2017_corpus[,c(1,3:(length(names(unga_2017_corpus))))])"
+"0","# textProcessor ----"
+"0","unga_2017_tp <- textProcessor(documents = unga_2017_corpus$text,metadata = unga_2017_corpus_meta)"
+"1","Building corpus... 
+"
+"2","
+"

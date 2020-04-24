@@ -1,0 +1,36 @@
+"0","#  ----
+corpus_4 <- corpus_4 %>%
+  mutate(
+    EU = case_when(
+      docvar1 == ""BEL"" & docvar3 > 1970 ~ 1,
+      docvar1 == ""ITA"" & docvar3 > 1970 ~ 1,
+      docvar1 == ""LUX"" & docvar3 > 1970 ~ 1,
+      docvar1 == ""FRA"" & docvar3 > 1970 ~ 1,
+      docvar1 == ""NLD"" & docvar3 > 1970 ~ 1,
+      docvar1 == ""DEU"" & docvar3 > 1970 ~ 1,
+      docvar1 == ""DNK"" & docvar3 > 1972 ~ 1,
+      docvar1 == ""IRL"" & docvar3 > 1972 ~ 1,
+      docvar1 == ""GBR"" & docvar3 > 1972 ~ 1,
+      docvar1 == ""GRC"" & docvar3 > 1981 ~ 1,
+      docvar1 == ""PRT"" & docvar3 > 1985 ~ 1,
+      docvar1 == ""ESP"" & docvar3 > 1985 ~ 1,
+      docvar1 == ""AUT"" & docvar3 > 1994 ~ 1,
+      docvar1 == ""FIN"" & docvar3 > 1994 ~ 1,
+      docvar1 == ""SWE"" & docvar3 > 1994 ~ 1,
+      docvar1 == ""CYP"" & docvar3 > 2003 ~ 1,
+      docvar1 == ""CZE"" & docvar3 > 2003 ~ 1,
+      docvar1 == ""EST"" & docvar3 > 2003 ~ 1,
+      docvar1 == ""HUN"" & docvar3 > 2003 ~ 1,
+      docvar1 == ""LVA"" & docvar3 > 2003 ~ 1,
+      docvar1 == ""LTU"" & docvar3 > 2003 ~ 1,
+      docvar1 == ""MLT"" & docvar3 > 2003 ~ 1,
+      docvar1 == ""POL"" & docvar3 > 2003 ~ 1,
+      docvar1 == ""SVK"" & docvar3 > 2003 ~ 1,
+      docvar1 == ""SVN"" & docvar3 > 2003 ~ 1,
+      docvar1 == ""BGR"" & docvar3 > 2006 ~ 1,
+      docvar1 == ""ROU"" & docvar3 > 2006 ~ 1,
+      docvar1 == ""HRV"" & docvar3 > 2012 ~ 1,
+      is.na(EU) ~ 0))
+"
+"2","Error in eval_tidy(pair$lhs, env = default_env) : object 'EU' not found
+"

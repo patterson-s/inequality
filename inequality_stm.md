@@ -70,8 +70,8 @@ corpus_3 <- prepDocuments(corpus_2$documents, corpus_2$vocab, corpus_2$meta, low
     ## Removing 41189 of 50938 terms (101505 of 5169003 tokens) due to frequency 
     ## Your corpus now has 7507 documents, 9749 terms and 5067498 tokens.
 
-Adding metadata covariates
-==========================
+COVARIATES
+==========
 
 P5 = USA, FRA, CHN, GBR, RUS -The authors of the dataset code Soviet Union as Russia
 
@@ -84,27 +84,102 @@ corpus_4 <- mutate(corpus_1, P5 = ifelse(docvar1 == "FRA", 1,
                                                               ifelse(docvar1 == "RUS",1,0))))))
 ```
 
-Nuclear Weapon States: NWS P5 India (1974) Pakistan (1998) North Korea (2006) Israel (unknown)
+Nuclear Weapon States: NWS P5 India (1974) Pakistan (1998) North Korea (2006) Israel (unknown; 1966)
 
 ``` r
-#NWS: P5 ----
-corpus_4 <- mutate(corpus_4, NWS = ifelse(docvar1 == "FRA", 1,
-                                         ifelse(docvar1 == "USA", 1,
-                                                ifelse(docvar1 == "GBR",1,
-                                                       ifelse(docvar1 == "CHN",1,
-                                                              ifelse(docvar1 == "RUS",1,0))))))
-
-# NWS: India ----
-corpus_5 <- corpus_4
-
-#corpus_5 %>%
-  if(corpus_5$docvar1 == "IND" && corpus_5$docvar3 > 1973){corpus_5$NWS = 1}
+#NWS
+corpus_4$NWS <- NA
+corpus_4 <- corpus_4 %>%
+  mutate(
+    NWS = case_when(
+      P5 == 1 ~ 1,
+      docvar1 == "IND" & docvar3 > 1973 ~ 1,
+      docvar1 == "PAK" & docvar3 > 1997 ~ 1,
+      docvar1 == "PRK" & docvar3 > 2005 ~ 1,
+      docvar1 == "ISR" & docvar3 > 1965 ~ 1,
+      is.na(NWS) ~ 0
+    )
+  )
 ```
+
+ECOWAS: <https://en.wikipedia.org/wiki/Treaty_of_Lagos>
+
+``` r
+# ECOWAS
+corpus_4$ECOWAS <- NA
+corpus_4 <- corpus_4 %>%
+  mutate(
+    ECOWAS = case_when(
+      docvar1 == "BEN" & docvar3 > 1974 ~ 1,
+        docvar1 == "BFA" & docvar3 > 1974 ~ 1,
+        docvar1 == "CPV" & docvar3 > 1974 ~ 1,
+        docvar1 == "GMB" & docvar3 > 1974 ~ 1,
+        docvar1 == "GHA" & docvar3 > 1974 ~ 1,
+        docvar1 == "GNB" & docvar3 > 1974 ~ 1,
+        docvar1 == "LBR" & docvar3 > 1974 ~ 1,
+        docvar1 == "MLI" & docvar3 > 1974 ~ 1,
+        docvar1 == "WAN" & docvar3 > 1974 ~ 1,
+        docvar1 == "SEN" & docvar3 > 1974 ~ 1,
+        docvar1 == "SLE" & docvar3 > 1974 ~ 1,
+        docvar1 == "TGO" & docvar3 > 1974 ~ 1,
+        docvar1 == "GIN" & docvar3 > 1974 & docvar3 < 2009 ~ 1,
+        docvar1 == "NER" & docvar3 > 1974 & docvar3 < 2010 ~ 1,
+        docvar1 == "CIV" & docvar3 > 1974 & docvar3 < 2011 ~ 1,
+        is.na(ECOWAS) ~ 0
+    )
+  )
+```
+
+EU: Maastricht 1993
+
+``` r
+#  ----
+corpus_4$EU <-NA
+corpus_4 <- corpus_4 %>%
+  mutate(
+    EU = case_when(
+      docvar1 == "BEL" & docvar3 > 1970 ~ 1,
+      docvar1 == "ITA" & docvar3 > 1970 ~ 1,
+      docvar1 == "LUX" & docvar3 > 1970 ~ 1,
+      docvar1 == "FRA" & docvar3 > 1970 ~ 1,
+      docvar1 == "NLD" & docvar3 > 1970 ~ 1,
+      docvar1 == "DEU" & docvar3 > 1970 ~ 1,
+      docvar1 == "DNK" & docvar3 > 1972 ~ 1,
+      docvar1 == "IRL" & docvar3 > 1972 ~ 1,
+      docvar1 == "GBR" & docvar3 > 1972 ~ 1,
+      docvar1 == "GRC" & docvar3 > 1981 ~ 1,
+      docvar1 == "PRT" & docvar3 > 1985 ~ 1,
+      docvar1 == "ESP" & docvar3 > 1985 ~ 1,
+      docvar1 == "AUT" & docvar3 > 1994 ~ 1,
+      docvar1 == "FIN" & docvar3 > 1994 ~ 1,
+      docvar1 == "SWE" & docvar3 > 1994 ~ 1,
+      docvar1 == "CYP" & docvar3 > 2003 ~ 1,
+      docvar1 == "CZE" & docvar3 > 2003 ~ 1,
+      docvar1 == "EST" & docvar3 > 2003 ~ 1,
+      docvar1 == "HUN" & docvar3 > 2003 ~ 1,
+      docvar1 == "LVA" & docvar3 > 2003 ~ 1,
+      docvar1 == "LTU" & docvar3 > 2003 ~ 1,
+      docvar1 == "MLT" & docvar3 > 2003 ~ 1,
+      docvar1 == "POL" & docvar3 > 2003 ~ 1,
+      docvar1 == "SVK" & docvar3 > 2003 ~ 1,
+      docvar1 == "SVN" & docvar3 > 2003 ~ 1,
+      docvar1 == "BGR" & docvar3 > 2006 ~ 1,
+      docvar1 == "ROU" & docvar3 > 2006 ~ 1,
+      docvar1 == "HRV" & docvar3 > 2012 ~ 1,
+      is.na(EU) ~ 0))
+
+#corpus_4 <- corpus_4 %>%
+#  mutate(EU = case_when(is.na(EU) ~ 0))
+```
+
+CTBT: <https://en.wikipedia.org/wiki/List_of_parties_to_the_Comprehensive_Nuclear-Test-Ban_Treaty>
 
 Preliminary Models
 ==================
 
 ``` r
+corpus_5 <- corpus_4
+
 # corpus_5 meta ----
 corpus_5_meta <- data.frame(corpus_5[,c(1,3:6)])
 
@@ -148,23 +223,23 @@ prev_1 <- stm(documents = corpus_5_prep$documents,
     ##      ....................................................................................................
     ## Initialization complete.
     ## ....................................................................................................
-    ## Completed E-Step (18 seconds). 
+    ## Completed E-Step (24 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 1 (approx. per word bound = -7.280) 
     ## ....................................................................................................
-    ## Completed E-Step (16 seconds). 
+    ## Completed E-Step (20 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 2 (approx. per word bound = -7.210, relative change = 9.527e-03) 
     ## ....................................................................................................
-    ## Completed E-Step (26 seconds). 
+    ## Completed E-Step (18 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 3 (approx. per word bound = -7.196, relative change = 1.968e-03) 
     ## ....................................................................................................
-    ## Completed E-Step (18 seconds). 
+    ## Completed E-Step (21 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 4 (approx. per word bound = -7.190, relative change = 9.001e-04) 
     ## ....................................................................................................
-    ## Completed E-Step (15 seconds). 
+    ## Completed E-Step (17 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 5 (approx. per word bound = -7.186, relative change = 5.180e-04) 
     ## Topic 1: state, peac, intern, unit, nation 
@@ -186,19 +261,19 @@ prev_1 <- stm(documents = corpus_5_prep$documents,
     ##  Topic 17: nation, world, will, develop, countri 
     ##  Topic 18: will, world, nuclear, can, countri 
     ## ....................................................................................................
-    ## Completed E-Step (15 seconds). 
+    ## Completed E-Step (18 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 6 (approx. per word bound = -7.184, relative change = 3.325e-04) 
     ## ....................................................................................................
-    ## Completed E-Step (18 seconds). 
+    ## Completed E-Step (19 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 7 (approx. per word bound = -7.182, relative change = 2.339e-04) 
     ## ....................................................................................................
-    ## Completed E-Step (15 seconds). 
+    ## Completed E-Step (18 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 8 (approx. per word bound = -7.181, relative change = 1.744e-04) 
     ## ....................................................................................................
-    ## Completed E-Step (16 seconds). 
+    ## Completed E-Step (15 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 9 (approx. per word bound = -7.180, relative change = 1.360e-04) 
     ## ....................................................................................................
@@ -228,19 +303,19 @@ prev_1 <- stm(documents = corpus_5_prep$documents,
     ## Completed M-Step. 
     ## Completing Iteration 11 (approx. per word bound = -7.178, relative change = 8.897e-05) 
     ## ....................................................................................................
-    ## Completed E-Step (12 seconds). 
+    ## Completed E-Step (13 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 12 (approx. per word bound = -7.178, relative change = 7.475e-05) 
     ## ....................................................................................................
-    ## Completed E-Step (12 seconds). 
+    ## Completed E-Step (13 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 13 (approx. per word bound = -7.177, relative change = 6.527e-05) 
     ## ....................................................................................................
-    ## Completed E-Step (17 seconds). 
+    ## Completed E-Step (22 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 14 (approx. per word bound = -7.177, relative change = 5.979e-05) 
     ## ....................................................................................................
-    ## Completed E-Step (18 seconds). 
+    ## Completed E-Step (13 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 15 (approx. per word bound = -7.176, relative change = 5.253e-05) 
     ## Topic 1: state, peac, intern, unit, peopl 
@@ -262,15 +337,15 @@ prev_1 <- stm(documents = corpus_5_prep$documents,
     ##  Topic 17: world, develop, nation, intern, countri 
     ##  Topic 18: will, can, world, year, one 
     ## ....................................................................................................
-    ## Completed E-Step (13 seconds). 
+    ## Completed E-Step (14 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 16 (approx. per word bound = -7.176, relative change = 4.463e-05) 
     ## ....................................................................................................
-    ## Completed E-Step (13 seconds). 
+    ## Completed E-Step (12 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 17 (approx. per word bound = -7.176, relative change = 3.979e-05) 
     ## ....................................................................................................
-    ## Completed E-Step (13 seconds). 
+    ## Completed E-Step (12 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 18 (approx. per word bound = -7.176, relative change = 3.619e-05) 
     ## ....................................................................................................
@@ -304,19 +379,19 @@ prev_1 <- stm(documents = corpus_5_prep$documents,
     ## Completed M-Step. 
     ## Completing Iteration 21 (approx. per word bound = -7.175, relative change = 2.771e-05) 
     ## ....................................................................................................
-    ## Completed E-Step (25 seconds). 
+    ## Completed E-Step (12 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 22 (approx. per word bound = -7.175, relative change = 2.591e-05) 
     ## ....................................................................................................
-    ## Completed E-Step (14 seconds). 
+    ## Completed E-Step (12 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 23 (approx. per word bound = -7.175, relative change = 2.391e-05) 
     ## ....................................................................................................
-    ## Completed E-Step (18 seconds). 
+    ## Completed E-Step (12 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 24 (approx. per word bound = -7.174, relative change = 2.226e-05) 
     ## ....................................................................................................
-    ## Completed E-Step (13 seconds). 
+    ## Completed E-Step (12 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 25 (approx. per word bound = -7.174, relative change = 2.044e-05) 
     ## Topic 1: state, peac, unit, intern, nuclear 
@@ -338,7 +413,7 @@ prev_1 <- stm(documents = corpus_5_prep$documents,
     ##  Topic 17: world, develop, intern, nation, countri 
     ##  Topic 18: will, can, world, one, year 
     ## ....................................................................................................
-    ## Completed E-Step (14 seconds). 
+    ## Completed E-Step (13 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 26 (approx. per word bound = -7.174, relative change = 1.918e-05) 
     ## ....................................................................................................
@@ -350,7 +425,7 @@ prev_1 <- stm(documents = corpus_5_prep$documents,
     ## Completed M-Step. 
     ## Completing Iteration 28 (approx. per word bound = -7.174, relative change = 1.697e-05) 
     ## ....................................................................................................
-    ## Completed E-Step (13 seconds). 
+    ## Completed E-Step (12 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 29 (approx. per word bound = -7.174, relative change = 1.559e-05) 
     ## ....................................................................................................
@@ -376,7 +451,7 @@ prev_1 <- stm(documents = corpus_5_prep$documents,
     ##  Topic 17: world, develop, intern, nation, countri 
     ##  Topic 18: will, can, world, one, unit 
     ## ....................................................................................................
-    ## Completed E-Step (15 seconds). 
+    ## Completed E-Step (13 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 31 (approx. per word bound = -7.174, relative change = 1.376e-05) 
     ## ....................................................................................................
@@ -384,15 +459,15 @@ prev_1 <- stm(documents = corpus_5_prep$documents,
     ## Completed M-Step. 
     ## Completing Iteration 32 (approx. per word bound = -7.173, relative change = 1.268e-05) 
     ## ....................................................................................................
-    ## Completed E-Step (14 seconds). 
+    ## Completed E-Step (15 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 33 (approx. per word bound = -7.173, relative change = 1.163e-05) 
     ## ....................................................................................................
-    ## Completed E-Step (17 seconds). 
+    ## Completed E-Step (13 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 34 (approx. per word bound = -7.173, relative change = 1.124e-05) 
     ## ....................................................................................................
-    ## Completed E-Step (13 seconds). 
+    ## Completed E-Step (14 seconds). 
     ## Completed M-Step. 
     ## Completing Iteration 35 (approx. per word bound = -7.173, relative change = 1.050e-05) 
     ## Topic 1: state, peac, unit, intern, nuclear 

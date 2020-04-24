@@ -1,0 +1,4 @@
+"0","pacman::p_load(stm,"
+"0","               dplyr,"
+"0","               quanteda,"
+"0","               readr)"
